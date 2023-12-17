@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&amp;P\CourseWork OOP&amp;P\</FILEPATH>
+      <FILENAME>Header.h</FILENAME>
+      <LINE>124</LINE>
+      <COLUMN>24</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'std::vector&lt;int,std::allocator&lt;int&gt; &gt;::[]'.</DESCRIPTION>
+    <FUNCTION>&gt;&gt;</FUNCTION>
+    <DECORATED>??5@YAAEAV?$basic_istream@DU?$char_traits@D@std@@@std@@AEAV01@AEAVVan@@@Z</DECORATED>
+    <FUNCLINE>93</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&amp;P\CourseWork OOP&amp;P\</FILEPATH>
+      <FILENAME>Header.h</FILENAME>
+      <LINE>393</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Passenger::authorization' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Passenger::{ctor}</FUNCTION>
+    <DECORATED>??0Passenger@@QEAA@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@00@Z</DECORATED>
+    <FUNCLINE>393</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Passenger::authorization</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&amp;P\CourseWork OOP&amp;P\</FILEPATH>
+      <FILENAME>Header.h</FILENAME>
+      <LINE>675</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Dispatcher::authorization' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Dispatcher::{ctor}</FUNCTION>
+    <DECORATED>??0Dispatcher@@QEAA@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z</DECORATED>
+    <FUNCLINE>675</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Dispatcher::authorization</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&amp;P\CourseWork OOP&amp;P\</FILEPATH>
+      <FILENAME>Header.h</FILENAME>
+      <LINE>987</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'std::vector&lt;Van,std::allocator&lt;Van&gt; &gt;::[]'.</DESCRIPTION>
+    <FUNCTION>&gt;&gt;</FUNCTION>
+    <DECORATED>??5@YAAEAV?$basic_istream@DU?$char_traits@D@std@@@std@@AEAV01@AEAVTrain@@@Z</DECORATED>
+    <FUNCLINE>946</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&amp;P\CourseWork OOP&amp;P\</FILEPATH>
+      <FILENAME>Header.h</FILENAME>
+      <LINE>992</LINE>
+      <COLUMN>26</COLUMN>
+    </SFA>
+    <DEFECTCODE>6031</DEFECTCODE>
+    <DESCRIPTION>Return value ignored: 'std::vector&lt;Ticket,std::allocator&lt;Ticket&gt; &gt;::[]'.</DESCRIPTION>
+    <FUNCTION>&gt;&gt;</FUNCTION>
+    <DECORATED>??5@YAAEAV?$basic_istream@DU?$char_traits@D@std@@@std@@AEAV01@AEAVTrain@@@Z</DECORATED>
+    <FUNCLINE>946</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -1,0 +1,183 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Return value ignored: 'std::vector<int,std::allocator<int> >::[]'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Папка Яна Сергеевича/БГУИР/2 курс/курсач ООПиП/CourseWork OOP&P/CourseWork OOP&P/Header.h"
+                },
+                "region": {
+                  "startLine": 124,
+                  "startColumn": 25
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": ">>",
+                  "decoratedName": "??5@YAAEAV?$basic_istream@DU?$char_traits@D@std@@@std@@AEAV01@AEAVVan@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'Passenger::authorization' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Папка Яна Сергеевича/БГУИР/2 курс/курсач ООПиП/CourseWork OOP&P/CourseWork OOP&P/Header.h"
+                },
+                "region": {
+                  "startLine": 393,
+                  "startColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "Passenger::{ctor}",
+                  "decoratedName": "??0Passenger@@QEAA@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@00@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "Passenger::authorization"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'Dispatcher::authorization' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Папка Яна Сергеевича/БГУИР/2 курс/курсач ООПиП/CourseWork OOP&P/CourseWork OOP&P/Header.h"
+                },
+                "region": {
+                  "startLine": 675,
+                  "startColumn": 2
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "Dispatcher::{ctor}",
+                  "decoratedName": "??0Dispatcher@@QEAA@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "Dispatcher::authorization"
+          }
+        },
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Return value ignored: 'std::vector<Van,std::allocator<Van> >::[]'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Папка Яна Сергеевича/БГУИР/2 курс/курсач ООПиП/CourseWork OOP&P/CourseWork OOP&P/Header.h"
+                },
+                "region": {
+                  "startLine": 987,
+                  "startColumn": 24
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": ">>",
+                  "decoratedName": "??5@YAAEAV?$basic_istream@DU?$char_traits@D@std@@@std@@AEAV01@AEAVTrain@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C6031",
+          "message": {
+            "text": "Return value ignored: 'std::vector<Ticket,std::allocator<Ticket> >::[]'."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Папка Яна Сергеевича/БГУИР/2 курс/курсач ООПиП/CourseWork OOP&P/CourseWork OOP&P/Header.h"
+                },
+                "region": {
+                  "startLine": 992,
+                  "startColumn": 27
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": ">>",
+                  "decoratedName": "??5@YAAEAV?$basic_istream@DU?$char_traits@D@std@@@std@@AEAV01@AEAVTrain@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.37.32825.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Папка Яна Сергеевича/БГУИР/2 курс/курсач ООПиП/CourseWork OOP&P/CourseWork OOP&P/Header.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "8e9636ed2c1051ba4d93f1d7b789cd35789cfdc8ef718730b15e6ad9cd647fc9"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/папка яна сергеевича/бгуир/2 курс/курсач оопип/coursework oop&p/coursework oop&p/source.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "36929b491601fcad98e7db1a5c77b6f17941a398c8548e244540814993caeb13"
+          }
+        }
+      ]
+    }
+  ]
+}
