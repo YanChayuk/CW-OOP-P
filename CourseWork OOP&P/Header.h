@@ -88,14 +88,14 @@ public:
 	Van() : type(""), number(0), number_of_seats(0), class_of_service("") { seats.reserve(100); }
 	Van(int number, string type, int number_of_seats, vector<int> seats, string class_of_service) : number(number), type(type),
 		seats(seats), class_of_service(class_of_service), number_of_seats(number_of_seats) {}
-	Van(const Van& other)
+	/*Van(const Van& other)
 	{
 		this->number = other.number;
 		this->type = other.type;
 		this->seats = other.seats;
 		this->class_of_service = other.class_of_service;
 		this->number_of_seats = other.number_of_seats;
-	}
+	}*/
 
 	void setType(string type) { this->type = type; }
 	string getType() { return this->type; }
@@ -300,10 +300,10 @@ class Stopover
 public:
 	Stopover() : name("") {}
 	Stopover(string name): name(name) {}
-	Stopover(const Stopover& other)
+	/*Stopover(const Stopover& other)
 	{
 		this->name = other.name;
-	}
+	}*/
 
 	void setName(string name) { this->name = name; }
 	string getName() { return this->name; }
@@ -451,17 +451,17 @@ class Ticket
 public:
 	static int number_of_tickets;
 
-	Ticket() : number(0), place(0), price(0), tariff("") { route.reserve(10); date.reserve(2); time.reserve(2); }
+	Ticket() : number(0), place(0), price(0), tariff("") { route.reserve(10); date.push_back(""); date.push_back(""); time.push_back(""); time.push_back(""); }
 	Ticket(int number, int place, float price, string tariff, vector<Stopover> route, vector<string> date, vector<string> time)
 	{
 		this->number = number; this->place = place; this->price = price;
 		this->tariff = tariff; this->route = route; this->date = date; this->time = time;
 	}
-	Ticket(const Ticket& other)
+	/*Ticket(const Ticket& other)
 	{
 		this->number = other.number; this->place = other.place; this->price = other.price;
 		this->tariff = other.tariff; this->route = other.route; this->date = other.date; this->time = other.time;
-	}
+	}*/
 	
 
 	void setNumber(int number) { this->number = number; }
@@ -702,7 +702,7 @@ class Train
 public:
 	static int number_of_trains;
 
-	Train() : number(0) { route.reserve(10); vans.reserve(10); tickets.reserve(10); date.reserve(10); }
+	Train() : number(0) { route.reserve(10); vans.reserve(10); tickets.reserve(10); date.push_back(""); date.push_back(""); time.push_back(""); time.push_back(""); }
 	Train(int number, vector<Ticket> tickets, vector<Stopover> route, vector<Van> vans, vector<string> date)
 	{
 		this->number = number;
@@ -711,14 +711,14 @@ public:
 		this->vans = vans;
 		this->date = date;
 	}
-	Train(const Train& other)
+	/*Train(const Train& other)
 	{
 		this->number = other.number;
 		this->tickets = other.tickets;
 		this->route = other.route;
 		this->vans = other.vans;
 		this->date = other.date;
-	}
+	}*/
 
 	void setNumber(int number) { this->number = number; }
 	int getNumber() { return this->number; }
@@ -792,22 +792,28 @@ public:
 		int i = 0;
 		while (i < this->number_of_stopover)
 		{
-			cout << "\tВведите название станции маршрута: ";
-			stop.setName(inputStringMail());
+			cout << "\n\tВведите название станции маршрута: ";
+			stop.setName(inputString());
 			route.push_back(stop);
 			cout << endl;
 			i++;
 		}
 	}
 
+	string getRouteName(int i)
+	{
+		return route[i].getName();
+	}
+
 	void setVans(int number_of_vans)
 	{
+		this->number_of_vans = number_of_vans;
 		int i = 0, number_of_seats; Van van;
 		string type, class_of_service;
 		while (i < number_of_vans)
 		{
 			cout << "\n\tВагон №"<< i+1 << endl;
-			van.setNumber(this->number * 10 + 1);
+			van.setNumber(this->number * 10 + i);
 			cout << "\n\tВведите тип вагона: ";
 			type = inputString();
 			van.setType(type);
@@ -820,31 +826,11 @@ public:
 			van.setServiceClass(class_of_service);
 			vans.push_back(van);
 			van.addVan();
+			this->tickets.resize(tickets.size()+number_of_seats);
+			i++;
 		}
 	}
-
-	void writeRoute()
-	{
-		ofstream file;
-		file.open(PATH_FILE_OF_ROUTES);
-		if (!file.is_open())
-		{
-			cout << "Не удалось открыть файл" << endl;
-			exit(0);
-		}
-		number_of_stopover++;
-		file << " " << number << " $ ";
-		for (int i = 0; i < route.size(); i++)
-		{
-			file << route[i].getName() << " $ ";
-			if (i != route.size() - 1)
-			{
-				file << endl;
-			}
-		}
-		file.close();
-	}
-
+	
 	void readRoute()
 	{
 		Train train;
@@ -856,19 +842,21 @@ public:
 			cout << "Не удалось открыть файл" << endl;
 			exit(0);
 		}
-
-		file.get();
-		getline(file, temp, '$');
-		train.setNumber(stoi(temp));
-		if (train.getNumber() == this->number)
+		while (!file.eof())
 		{
-			while (file.get() != '\n')
+			file.get();
+			getline(file, temp, '$');
+			train.setNumber(stoi(temp));
+			if (train.getNumber() == this->number)
 			{
-				file.get();
-				getline(file, temp, '$');
-				temp.pop_back();
-				this->route.push_back(temp);
-				if (!file.good()) break;
+				while (file.get() != '\n')
+				{
+					file.get();
+					getline(file, temp, '$');
+					temp.pop_back();
+					this->route.push_back(temp);
+					if (!file.good()) break;
+				}
 			}
 		}
 		file.close();
@@ -1088,6 +1076,7 @@ public:
 
 class Human
 {
+protected:
 	string surname;
 	string name;
 	string patronimic;
@@ -1101,14 +1090,14 @@ public:
 		this->patronimic = other.patronimic;
 	}
 	
-	void setName(string name) { this->name = name; }
-	string getName() { return name; }
+	virtual void setName(string name) { this->name = name; }
+	virtual string getName() { return name; }
 	
-	void setSurname(string surname) { this->surname = surname; }
-	string getSurname() { return surname; }
+	virtual void setSurname(string surname) { this->surname = surname; }
+	virtual string getSurname() { return surname; }
 
-	void setPatronimic(string patronimic) { this->patronimic = patronimic; }
-	string getPatronimic() { return patronimic; }
+	virtual void setPatronimic(string patronimic) { this->patronimic = patronimic; }
+	virtual string getPatronimic() { return patronimic; }
 
 	virtual void showAccountInfo() = 0;
 	virtual void corAccount() = 0;
@@ -1127,14 +1116,14 @@ public:
 	Authorization(): login(""), password(""), role(0), access(0), id(0){}
 	Authorization(string login, string password, int id, int role, int access): login(login), password(password), id(id), 
 		role(role), access(access){}
-	Authorization(const Authorization& other)
+	/*Authorization(const Authorization& other)
 	{
 		this->id = other.id;
 		this->login = other.login;
 		this->password = other.password;
 		this->role = other.role;
 		this->access = other.access;
-	}
+	}*/
 	
 	void setLogin(string login) { this->login = login; }
 	string getLogin() { return this->login; }
@@ -1150,8 +1139,6 @@ public:
 
 	void setId(int id) { this->id = id; }
 	int getId() { return this->id; }
-	
-
 };
 
 class Passenger: public Human
@@ -1165,20 +1152,29 @@ public:
 	static int number_of_pass;
 
 	Passenger(): mail(""), phone_number(""), passport_data(""), authorization(new Authorization), balance(100) {}
-	Passenger(string mail, string phone_number, string passport_data, float balance) : mail(mail),
-		phone_number(phone_number), passport_data(passport_data), authorization(authorization), balance(balance) {}
-	Passenger(const Passenger& other)
+	/*Passenger(string mail, string phone_number, string passport_data, float balance, Authorization* authorization) : mail(mail),
+		phone_number(phone_number), passport_data(passport_data), authorization(authorization), balance(balance) {}*/
+	/*Passenger(const Passenger& other)
 	{
 		this->mail = other.mail;
 		this->phone_number = other.phone_number;
 		this->passport_data = other.passport_data;
 		this->authorization = other.authorization;
 		this->balance = other.balance;
-	}
+	}*/
 	
+	void setName(string name) override { this->name = name; }
+	string getName() { return name; }
+
+	void setSurname(string surname) override { this->surname = surname; }
+	string getSurname() { return surname; }
+
+	void setPatronimic(string patronimic) override { this->patronimic = patronimic; }
+	string getPatronimic() { return patronimic; }
+
 	void setBalance(float balance) { this->balance = balance; }
 	float getBalance() { return this->balance; }
-
+	
 	void setMail(string mail) { this->mail = mail; }
 	string getMail() { return this->mail; }
 
@@ -1196,17 +1192,17 @@ public:
 	void showAccountInfo() override
 	{
 		title("Информация о пассажире");
-		cout << "  " << setw(119) << "" << endl;
+		cout << "  " << setw(129) << "" << endl;
 		cout.fill(' ');
-		cout << "  $" << setw(20) << "Фамилия" << " $" << setw(10) << "Имя" << " $" << setw(19) << "Отчество" << " $" << setw(19)
-			<< "Эл.почта" << " $" << setw(15) << "Номер телефона" << " $" << setw(23) << "Серия и номер паспорта" << " $" << endl;
+		cout << "  $" << setw(20) << "Фамилия" << " $" << setw(10) << "Имя" << " $" << setw(19) << "Отчество" << " $" << setw(9)<< "Баланс"<<" $"<<
+			setw(25) << "Электронная почта    " << " $" << setw(19) << "Номер телефона" << " $" << setw(23) << "Серия и номер паспорта" << " $" << endl;
 		cout.fill('~');
-		cout << "  " << setw(119) << "" << endl;
+		cout << "  " << setw(129) << "" << endl;
 		cout.fill(' ');
-		cout << "  $" << setw(20) << this->getSurname() << " $" << setw(10) << this->getName() << " $" << setw(19) << this->getPatronimic()
-			<< " $" << setw(19) << this->mail << " $" << setw(15) << this->phone_number << " $" << setw(23) << this->passport_data << " $" << endl;
+		cout << "  $" << setw(20) << this->getSurname() << " $" << setw(10) << this->getName() << " $" << setw(19) << this->getPatronimic() << " $" << setw(9) << setprecision(2) << this->getBalance()
+			<< " $" << setw(25) << this->mail << " $" << setw(19) << this->phone_number << " $" << setw(23) << this->passport_data << " $" << endl;
 		cout.fill('~');
-		cout << "  " << setw(119) << "" << endl;
+		cout << "  " << setw(129) << "" << endl;
 	}
 
 	void corAccount() override 
@@ -1235,9 +1231,10 @@ public:
 			switch (choice)
 			{
 			case 1:
+				n = 1;
 				cout << "\nВведите новый логин: " << endl;
 				new_login = inputStringLogin();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1247,18 +1244,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
-					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+					else
+					{ 
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						} 
 					}
 				}
 				break;
 			case 2:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новый пароль: " << endl;
 				new_password = inputStringPassword();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1268,18 +1268,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 3:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новую фамилию: " << endl;
 				new_surname = inputString();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1289,18 +1292,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 4:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новое имя: " << endl;
 				new_name = inputString();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1310,18 +1316,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 5:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новое отчество: " << endl;
 				new_patrominic = inputString();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1331,18 +1340,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 6:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новую электронную почту: " << endl;
 				new_mail = inputStringMail();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1352,18 +1364,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 7:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новый номер телефона: " << endl;
 				new_phone = inputStringMail();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1373,18 +1388,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 8:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новые серию и номер паспорта: " << endl;
 				new_passport = inputStringLogin();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1394,10 +1412,13 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
@@ -1515,7 +1536,8 @@ public:
 	friend ostream& operator<<(ostream& s, Passenger& pass)
 	{ 
 		s << " " << pass.authorization->getId() << " $ " << pass.authorization->getLogin() << " $ "
-			<< encryptPassword(pass.authorization->getPassword(), encryption_key) << " $ " << pass.getSurname() << " $ " << pass.getName() << " $ "
+			<< encryptPassword(pass.authorization->getPassword(), encryption_key) << " $ " << setprecision(2) << pass.balance << " $ "
+			<< pass.getSurname() << " $ " << pass.getName() << " $ "
 			<< pass.getPatronimic() << " $ " << pass.mail << " $ " << pass.phone_number << " $ "
 			<< encryptPassword(pass.passport_data, encryption_key) << " $ " << pass.authorization->getAccess() << " $";
 		return s;
@@ -1555,6 +1577,11 @@ public:
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
+		pass.setBalance(stoi(temp));
+
+		s.get();
+		getline(s, temp, '$');
+		temp.pop_back();
 		pass.setSurname(temp);
 
 		s.get();
@@ -1590,7 +1617,7 @@ public:
 		return s;
 	}
 
-	void fillPassengers(vector<Passenger>& arr_of_pass)
+	static void fillPassengers(vector<Passenger>& arr_of_pass)
 	{
 		Passenger pass; int mark = 0;
 		ifstream file;
@@ -1600,6 +1627,10 @@ public:
 			cout << "Не удалось открыть файл" << endl;
 			exit(0);
 		}
+
+		number_of_pass = 0;
+		arr_of_pass.clear();
+
 		while (file >> pass && mark!=1)
 		{
 			arr_of_pass.push_back(pass);
@@ -1609,7 +1640,7 @@ public:
 		file.close();
 	}
 
-	void writePassengers(vector<Passenger>& arr_of_pass)
+	static void writePassengers(vector<Passenger>& arr_of_pass)
 	{
 		ofstream file;
 		file.open(PATH_FILE_OF_PASSENGERS);//("Passenger.txt");
@@ -1667,29 +1698,38 @@ public:
 	Authorization* authorization;
 
 	Dispatcher(): key(""), authorization(new Authorization) {}
-	Dispatcher(string key): key(key) {}
-	Dispatcher(const Dispatcher& other)
+	/*Dispatcher(string key): key(key) {}*/
+	/*Dispatcher(const Dispatcher& other)
 	{
 		this->key = other.key;
 		this->authorization = other.authorization;
-	}
+	}*/
 
 	void setKey(string key) { this->key = key; }
 	string getKey() { return this->key; }
 
+	void setName(string name) override { this->name = name; }
+	string getName() { return name; }
+
+	void setSurname(string surname) override { this->surname = surname; }
+	string getSurname() { return surname; }
+
+	void setPatronimic(string patronimic) override { this->patronimic = patronimic; }
+	string getPatronimic() { return patronimic; }
+
 	void showAccountInfo() override
 	{
 		title("Информация о диспетчере");
-		cout << "  " << setw(67) << "" << endl; cout.fill(' ');
+		cout << "  " << setw(77) << "" << endl; cout.fill(' ');
 		cout << "  $" << setw(20) << "Фамилия " << " $" << setw(10) << "Имя" << " $" << setw(19) << "Отчество" << " $" << setw(19)
 			<< "Текущий ключ" << " $" << endl;
 		cout.fill('~');
-		cout << "  " << setw(67) << "" << endl;
+		cout << "  " << setw(77) << "" << endl;
 		cout.fill(' ');
 		cout << "  $" << setw(20) << this->getSurname() << " $" << setw(10) << this->getName() << " $" << setw(19) << this->getPatronimic()
 			<< " $" << setw(19) << this->key << " $" << endl;
 		cout.fill('~');
-		cout << "  " << setw(67) << "" << endl; 
+		cout << "  " << setw(77) << "" << endl; 
 	}
 
 	void corAccount() override
@@ -1715,9 +1755,10 @@ public:
 			switch (choice)
 			{
 			case 1:
+				n = 1;
 				cout << "\nВведите новый логин: " << endl;
 				new_login = inputStringLogin();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) "<<endl<<"\t";
 					choose = inputString();
@@ -1727,18 +1768,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 2:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новый пароль: " << endl;
 				new_password = inputStringPassword();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1748,18 +1792,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 3:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новую фамилию: " << endl;
 				new_surname = inputString();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1769,18 +1816,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 4:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новое имя: " << endl;
 				new_name = inputString();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1790,18 +1840,21 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
 			case 5:
-				n == 1;
+				n = 1;
 				cout << "\nВведите новое отчество: " << endl;
 				new_patrominic = inputString();
-				while (n == 1)
+				while (n != 0)
 				{
 					cout << "\n\tСохранить изменения? (Да/Нет) " << endl << "\t";
 					choose = inputString();
@@ -1811,10 +1864,13 @@ public:
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
-					if (choose == "Нет")
+					else
 					{
-						cout << "\n\tКорректировка отменена\n";
-						n = 0;
+						if (choose == "Нет")
+						{
+							cout << "\n\tКорректировка отменена\n";
+							n = 0;
+						}
 					}
 				}
 				break;
@@ -1920,7 +1976,7 @@ public:
 			cout << "  " << setw(73) << "" << endl;
 			cout.fill(' ');
 			cout << "\n  Выберите пункт меню: ";
-			choice = inputNumber(0, 6);
+			choice = inputNumber(0, 3);
 			switch (choice)
 			{
 			case 0: flag_exit = false; break;
@@ -1949,7 +2005,26 @@ public:
 					cout << "\n\tВведите количество станций маршрута(до 30): ";
 					train.setStopoverNumber(inputNumber(1, 30));
 					train.setRoute();
-					train.writeRoute();
+
+					ofstream file;
+					file.open(PATH_FILE_OF_ROUTES);
+					if (!file.is_open())
+					{
+						cout << "Не удалось открыть файл" << endl;
+						exit(0);
+					}
+					train.setStopoverNumber(train.getStopoverNumber()+1);
+					file << " " << train.getNumber() << " $ ";
+					for (int i = 0; i < train.getStopoverNumber(); i++)
+					{
+						file << train.getRouteName(i) << " $ ";
+						if (i != train.getStopoverNumber() - 1)
+						{
+							file << endl;
+						}
+					}
+					file.close();
+					
 					int day1, month1, year1, sec1, min1, hour1,q=0, day2, month2, year2, sec2, min2, hour2;
 					cout << "\n\tВведите дату отправления(день,месяц,год): ";
 					day1 = inputNumber(1, 31); month1 = inputNumber(1, 12); year1 = inputNumber(2023, 2024);
@@ -2007,7 +2082,9 @@ public:
 					{
 						arr_of_train.push_back(train);
 						train.addTrain();
+						flag = false;
 					}
+					
 				}
 				cout << endl; system("pause");
 			}
@@ -2016,7 +2093,11 @@ public:
 			{
 				Train train; vector<Train> arr_of_train;
 				train.fillTrains(arr_of_train);
-				train.showTrainsInfo(arr_of_train);
+				if (arr_of_train.size() > 0)
+				{
+					train.showTrainsInfo(arr_of_train);
+				}
+				else cout << "\n\tПоезда отсутствуют!" << endl;
 				cout << endl; system("pause");
 			}
 			break;
@@ -2024,7 +2105,11 @@ public:
 			{
 				Stopover stop; vector<Stopover> arr_of_stop;
 				stop.fillStopovers(arr_of_stop);
-				stop.showStopoversInfo(arr_of_stop);
+				if (arr_of_stop.size() > 0)
+				{
+					stop.showStopoversInfo(arr_of_stop);
+				}
+				else cout << "\n\tСтанции отсутсвуют!" << endl;
 				cout << endl; system("pause");
 			}
 			break;
@@ -2128,7 +2213,7 @@ public:
 		return s;
 	}
 
-	void fillDispatchers(vector<Dispatcher>& arr_of_disp)
+	static void fillDispatchers(vector<Dispatcher>& arr_of_disp)
 	{
 		Dispatcher disp; int mark = 0;
 		ifstream file;
@@ -2139,6 +2224,7 @@ public:
 			exit(0);
 		}
 
+		number_of_disp = 0;
 		arr_of_disp.clear();
 
 		while (file >> disp && mark!=1)
@@ -2150,7 +2236,7 @@ public:
 		file.close();
 	}
 
-	void writeDispatchers(vector<Dispatcher>& arr_of_disp)
+	static void writeDispatchers(vector<Dispatcher>& arr_of_disp)
 	{
 		ofstream file;
 		file.open(PATH_FILE_OF_DISPATCHERS);//("Dispatcher.txt");
@@ -2198,7 +2284,6 @@ public:
 		file.close();
 	}
 
-
 };
 
 
@@ -2208,7 +2293,7 @@ extern void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_
 extern void authorization(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp);
 
 extern void menuPassenger(vector<Passenger>& arr_of_pass);
-extern void menuDispatcher(vector<Dispatcher>& arr_of_disp);
+extern void menuDispatcher(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp);
 
 
 

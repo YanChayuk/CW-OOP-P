@@ -18,6 +18,7 @@ int main()
 	setlocale(LC_ALL, "rus");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
+	system("chcp 1251");
 	//system("cls");
 	system("color F5");
 	current_login[0] = '\0';
@@ -83,9 +84,9 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 		title("Меню пассажира");
 		cout << "  $                                                                       $\n";
 		cout << "  $    0 - Назад                                                          $\n";
-		cout << "  $    1 - Выбрать билет                                                  $\n";
-		cout << "  $    2 - Сделать заказ                                                  $\n";
-		cout << "  $    3 - Личный кабинет                                                 $\n";
+		cout << "  $    1 - Личный кабинет                                                 $\n";
+		cout << "  $    2 - Выбрать билет                                                  $\n";
+		cout << "  $    3 - Сделать заказ                                                  $\n";
 		cout << "  $                                                                       $\n";
 		cout.fill('~');
 		cout << "  " << setw(73) << "" << endl;
@@ -97,13 +98,18 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 		case 0: {current_role = -1; current_login = " "; flag_exit = false; } break;
 		case 1:
 		{
+			arr_of_pass[current_i].menuAccount(arr_of_pass);
+		}
+		break;
+		case 2: 
+		{
 			Ticket ticket;
 			int i = 0, k = 0;
 			ticket.enterRoute();
 
 			if (train.showTrainsInfoByRoute(arr_of_train, ticket.getArrStop(), ticket.getDepStop()))
 			{
-				cout << "\n\tВыберите номер поезда: "; 
+				cout << "\n\tВыберите номер поезда: ";
 				train.setNumber(inputNumber(1, 1000));
 				while (i < arr_of_train.size())
 				{
@@ -134,7 +140,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 					cout << "\n\tВвыберите место: ";
 					ticket.setPlace(inputNumber(1, arr_of_train[cur_i].getNumberSeats(cur_i)));
 					ticket.enterRoute();
-					ticket.setPrice(18.34);
+					ticket.setPrice(18.32 + cur_i*10);
 					ticket.setNumber(100 * cur_i);
 					ticket.setTariff("Полный");
 					ticket.setArrDate(arr_of_train[cur_i].getArrDate());
@@ -143,14 +149,17 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 					ticket.setDepTime(arr_of_train[cur_i].getDepTime());
 					order.push_back(ticket);
 					ticket.addTicket();
+					cout << "\n\tВаш билет: " << endl;
+					ticket.showTicketInfo();
+
 				}
 				else cout << "\n\tТакого поезда нет!" << endl;
 			}
 		}
-			break;
-		case 2: 
+		break;
+		case 3:
 		{
-			string chose; float price=0; int  i = 0;
+			string chose; float price = 0; int  i = 0;
 			if (order.empty())
 			{
 				cout << "\n\tВы не выбрали билеты" << endl;
@@ -158,7 +167,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 			else
 			{
 				order[0].showTicketsInfo(order);
-				cout << "\n\tОплатить заказ?" << endl << "\t";
+				cout << "\n\tОплатить заказ?(Да/Нет)" << endl << "\t";
 				chose = inputString();
 				if (chose == "Да")
 				{
@@ -185,12 +194,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 					cout << "\n\tЗаказ отменен\n";
 				}
 			}
-			
-		}
-		break;
-		case 3:
-		{
-			arr_of_pass[current_i].menuAccount(arr_of_pass);
+
 		}
 		break;
 		default: cout << "Error" << endl;
@@ -198,7 +202,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 	}
 }
 
-void menuDispatcher(vector<Dispatcher>& arr_of_disp)
+void menuDispatcher(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp)
 {
 	int choice;
 	bool flag_exit = true;
@@ -209,18 +213,21 @@ void menuDispatcher(vector<Dispatcher>& arr_of_disp)
 		cout << "  $    0 - Назад                                                          $\n";
 		cout << "  $    1 - Личный кабинет                                                 $\n";
 		cout << "  $    2 - Работа с данными                                               $\n";
+		cout << "  $    3 - Добавить диспетчера                                            $\n";
 		cout << "  $                                                                       $\n";
 		cout.fill('~');
 		cout << "  " << setw(73) << "" << endl;
 		cout.fill(' ');
 		cout << "\n  Выберите пункт меню: ";
-		choice = inputNumber(0, 2);
+		choice = inputNumber(0, 3);
 		switch (choice)
 		{
 		case 0: {current_role = -1; current_login = " "; flag_exit = false; } break;
 		case 1: arr_of_disp[current_i].menuAccount(arr_of_disp);
 			break;
 		case 2: arr_of_disp[current_i].menuData();
+			break;
+		case 3: regisration(arr_of_pass, arr_of_disp);
 			break;
 		default: cout << "Error" << endl;
 		}

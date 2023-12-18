@@ -79,10 +79,10 @@ void authorization(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_di
     cout << "\n\tВведите ваш пароль - ";
     current_password = passwordEncryption();
     current_attempt = 0;
-    Authorization::total_number_of_account = arr_of_pass.size() + arr_of_disp.size()-1;
+    Authorization::total_number_of_account = arr_of_pass.size() + arr_of_disp.size();
     while (i < Authorization::total_number_of_account && current_role == -1)
     {
-        if (arr_of_pass[i].authorization->getLogin() == current_login && arr_of_pass[i].authorization->getPassword() == current_password)
+        if (i < arr_of_pass.size() && arr_of_pass[i].authorization->getLogin() == current_login && arr_of_pass[i].authorization->getPassword() == current_password )
         {
             current_role = arr_of_pass[i].authorization->getRole();
             current_access = arr_of_pass[i].authorization->getAccess();
@@ -90,7 +90,7 @@ void authorization(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_di
         }
         else
         {
-            if (arr_of_disp[i].authorization->getLogin() == current_login && arr_of_disp[i].authorization->getPassword() == current_password)
+            if (i < arr_of_disp.size() && arr_of_disp[i].authorization->getLogin() == current_login && arr_of_disp[i].authorization->getPassword() == current_password )
             {
                 current_role = arr_of_disp[i].authorization->getRole();
                 current_access = arr_of_disp[i].authorization->getAccess();
@@ -101,8 +101,8 @@ void authorization(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_di
     }
     if (current_role == -1)
     {
-        cout << endl << "\n\n\tПользователя с таким логином и паролем не существует." << endl << endl;
-        current_login = " ";
+        cout << endl << "\n\tПользователя с таким логином и паролем не существует." << endl << endl;
+        current_login = "";
         system("pause");
         main_menu();
     }
@@ -114,7 +114,7 @@ void authorization(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_di
             {
                 cout << "\n\n\tВы вошли как администратор - " << current_login << endl << endl;
                 system("pause");
-                menuDispatcher(arr_of_disp);
+                menuDispatcher(arr_of_pass, arr_of_disp);
             }
             if (current_role == 0)
             {
@@ -146,7 +146,7 @@ void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp
     current_role = 0;
     while (i < arr_of_pass.size() || j < arr_of_disp.size())
     {
-        if (arr_of_pass[i].authorization->getLogin() == new_login && i < arr_of_pass.size())
+        if (i < arr_of_pass.size() && arr_of_pass[i].authorization->getLogin() == new_login )
         {
             cout << "\nPASS с таким логином уже существует" << endl;
             Sleep(10);
@@ -157,7 +157,7 @@ void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp
         else
         {
             i++;
-            if (arr_of_disp[j].authorization->getLogin() == new_login && j < arr_of_disp.size())
+            if (j < arr_of_disp.size() && arr_of_disp[j].authorization->getLogin() == new_login )
             {
                 cout << "\nDISP с таким логином уже существует"<< endl;
                 Sleep(10);

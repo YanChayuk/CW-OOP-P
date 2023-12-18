@@ -161,7 +161,7 @@ bool isMail(const string& str)
 {
 	for (char ch : str)
 	{
-		if ((!std::isalnum(ch) && ch != '@' && ch != '.' && ch != '_' && ch != '(' && ch != ')' && ch != '-') || ch == ' ' )
+		if ((!std::isalnum(ch) && ch != '@' && ch != '.' && ch != '_' && ch != '(' && ch != ')' && ch != '-' && ch!='+') || ch == ' ')
 		{
 			return false;
 		}
