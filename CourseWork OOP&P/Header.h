@@ -1148,10 +1148,10 @@ class Passenger: public Human
 	string phone_number;
 	string passport_data;//серия и номер паспорта
 public:
-	Authorization* authorization;
+	Authorization authorization;
 	static int number_of_pass;
 
-	Passenger(): mail(""), phone_number(""), passport_data(""), authorization(new Authorization), balance(100) {}
+	Passenger(): mail(""), phone_number(""), passport_data(""), authorization(), balance(100) {}
 	/*Passenger(string mail, string phone_number, string passport_data, float balance, Authorization* authorization) : mail(mail),
 		phone_number(phone_number), passport_data(passport_data), authorization(authorization), balance(balance) {}*/
 	/*Passenger(const Passenger& other)
@@ -1240,7 +1240,7 @@ public:
 					choose = inputString();
 					if (choose == "Да")
 					{
-						this->authorization->setLogin(new_login);
+						this->authorization.setLogin(new_login);
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
@@ -1264,7 +1264,7 @@ public:
 					choose = inputString();
 					if (choose == "Да")
 					{
-						this->authorization->setPassword(new_password);
+						this->authorization.setPassword(new_password);
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
@@ -1507,39 +1507,13 @@ public:
 		}
 	}
 
-	//void addTicket() override
-	//{
-	//	string current_key;
-	//	while (current_attempt < 3)
-	//	{
-	//		cout << "Enter key: ";
-	//		getline(cin, current_key);
-	//		/*if (current_key == this->key)
-	//		{
-	//			cout << "Enter number of train";
-	//		}
-	//		else
-	//		{
-	//			cout << "Not avaliable key, repid enter!" << endl;
-	//			current_attempt++;
-	//		}*/
-	//		if (current_attempt == 3)
-	//		{
-	//			cout << "\tПовторите вход!\n";
-	//			system("pause");
-	//			//main_menu();
-	//		}
-	//		current_attempt = 0;
-	//	}
-	//}
-
 	friend ostream& operator<<(ostream& s, Passenger& pass)
 	{ 
-		s << " " << pass.authorization->getId() << " $ " << pass.authorization->getLogin() << " $ "
-			<< encryptPassword(pass.authorization->getPassword(), encryption_key) << " $ " << setprecision(2) << pass.balance << " $ "
+		s << " " << pass.authorization.getId() << " $ " << pass.authorization.getLogin() << " $ "
+			<< encryptPassword(pass.authorization.getPassword(), encryption_key) << " $ " << setprecision(2) << pass.balance << " $ "
 			<< pass.getSurname() << " $ " << pass.getName() << " $ "
 			<< pass.getPatronimic() << " $ " << pass.mail << " $ " << pass.phone_number << " $ "
-			<< encryptPassword(pass.passport_data, encryption_key) << " $ " << pass.authorization->getAccess() << " $";
+			<< encryptPassword(pass.passport_data, encryption_key) << " $ " << pass.authorization.getAccess() << " $";
 		return s;
 	}
 
@@ -1557,22 +1531,22 @@ public:
 
 		number_of_pass++;
 
-		pass.authorization->setRole(0);
+		pass.authorization.setRole(0);
 
 		//s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		pass.authorization->setId(stoi(temp));
+		pass.authorization.setId(stoi(temp));
 
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		pass.authorization->setLogin(temp);
+		pass.authorization.setLogin(temp);
 
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		pass.authorization->setPassword(decryptPassword(temp, encryption_key));
+		pass.authorization.setPassword(decryptPassword(temp, encryption_key));
 
 		s.get();
 		getline(s, temp, '$');
@@ -1612,7 +1586,7 @@ public:
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		pass.authorization->setAccess(stoi(temp));
+		pass.authorization.setAccess(stoi(temp));
 
 		return s;
 	}
@@ -1695,9 +1669,9 @@ class Dispatcher: public Human
 	string key;//ключ подтверждения действий в системе
 public:
 	static int number_of_disp;
-	Authorization* authorization;
+	Authorization authorization;
 
-	Dispatcher(): key(""), authorization(new Authorization) {}
+	Dispatcher(): key(""), authorization() {}
 	/*Dispatcher(string key): key(key) {}*/
 	/*Dispatcher(const Dispatcher& other)
 	{
@@ -1764,7 +1738,7 @@ public:
 					choose = inputString();
 					if (choose == "Да")
 					{
-						this->authorization->setLogin(new_login);
+						this->authorization.setLogin(new_login);
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
@@ -1788,7 +1762,7 @@ public:
 					choose = inputString();
 					if (choose == "Да")
 					{
-						this->authorization->setPassword(new_password);
+						this->authorization.setPassword(new_password);
 						cout << "\n\tКорректировка сохранена\n";
 						n = 0;
 					}
@@ -2148,9 +2122,9 @@ public:
 
 	friend ostream& operator<<(ostream& s, Dispatcher& disp)
 	{
-		s << " " << disp.authorization->getId() << " $ " << disp.authorization->getLogin() << " $ "
-			<< encryptPassword(disp.authorization->getPassword(), encryption_key) << " $ " << disp.getSurname() << " $ " << disp.getName() << " $ "
-			<< disp.getPatronimic() << " $ " << encryptPassword(disp.getKey(), encryption_key) << " $ " << disp.authorization->getAccess() << " $";
+		s << " " << disp.authorization.getId() << " $ " << disp.authorization.getLogin() << " $ "
+			<< encryptPassword(disp.authorization.getPassword(), encryption_key) << " $ " << disp.getSurname() << " $ " << disp.getName() << " $ "
+			<< disp.getPatronimic() << " $ " << encryptPassword(disp.getKey(), encryption_key) << " $ " << disp.authorization.getAccess() << " $";
 		return s;
 	}
 
@@ -2168,22 +2142,22 @@ public:
 
 		number_of_disp++;
 
-		disp.authorization->setRole(1);
+		disp.authorization.setRole(1);
 
 		//s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		disp.authorization->setId(stoi(temp));
+		disp.authorization.setId(stoi(temp));
 
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		disp.authorization->setLogin(temp);
+		disp.authorization.setLogin(temp);
 
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		disp.authorization->setPassword(decryptPassword(temp, encryption_key));
+		disp.authorization.setPassword(decryptPassword(temp, encryption_key));
 
 		s.get();
 		getline(s, temp, '$');
@@ -2208,7 +2182,7 @@ public:
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		disp.authorization->setAccess(stoi(temp));
+		disp.authorization.setAccess(stoi(temp));
 
 		return s;
 	}

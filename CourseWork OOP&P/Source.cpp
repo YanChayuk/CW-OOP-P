@@ -82,18 +82,18 @@ void authorization(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_di
     Authorization::total_number_of_account = arr_of_pass.size() + arr_of_disp.size();
     while (i < Authorization::total_number_of_account && current_role == -1)
     {
-        if (i < arr_of_pass.size() && arr_of_pass[i].authorization->getLogin() == current_login && arr_of_pass[i].authorization->getPassword() == current_password )
+        if (i < arr_of_pass.size() && arr_of_pass[i].authorization.getLogin() == current_login && arr_of_pass[i].authorization.getPassword() == current_password )
         {
-            current_role = arr_of_pass[i].authorization->getRole();
-            current_access = arr_of_pass[i].authorization->getAccess();
+            current_role = arr_of_pass[i].authorization.getRole();
+            current_access = arr_of_pass[i].authorization.getAccess();
             current_i = i;
         }
         else
         {
-            if (i < arr_of_disp.size() && arr_of_disp[i].authorization->getLogin() == current_login && arr_of_disp[i].authorization->getPassword() == current_password )
+            if (i < arr_of_disp.size() && arr_of_disp[i].authorization.getLogin() == current_login && arr_of_disp[i].authorization.getPassword() == current_password )
             {
-                current_role = arr_of_disp[i].authorization->getRole();
-                current_access = arr_of_disp[i].authorization->getAccess();
+                current_role = arr_of_disp[i].authorization.getRole();
+                current_access = arr_of_disp[i].authorization.getAccess();
                 current_i = i;
             }
             else i++;
@@ -146,7 +146,7 @@ void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp
     current_role = 0;
     while (i < arr_of_pass.size() || j < arr_of_disp.size())
     {
-        if (i < arr_of_pass.size() && arr_of_pass[i].authorization->getLogin() == new_login )
+        if (i < arr_of_pass.size() && arr_of_pass[i].authorization.getLogin() == new_login )
         {
             cout << "\nPASS с таким логином уже существует" << endl;
             Sleep(10);
@@ -157,7 +157,7 @@ void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp
         else
         {
             i++;
-            if (j < arr_of_disp.size() && arr_of_disp[j].authorization->getLogin() == new_login )
+            if (j < arr_of_disp.size() && arr_of_disp[j].authorization.getLogin() == new_login )
             {
                 cout << "\nDISP с таким логином уже существует"<< endl;
                 Sleep(10);
@@ -175,11 +175,11 @@ void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp
         int new_id = (Dispatcher::number_of_disp+1) * 10 + 1;
         string new_name, new_surname, new_patronimic, new_key;
         Dispatcher new_disp;
-        new_disp.authorization->setLogin(new_login);
-        new_disp.authorization->setPassword(new_password);
-        new_disp.authorization->setRole(new_role);
-        new_disp.authorization->setAccess(new_access);
-        new_disp.authorization->setId(new_id);
+        new_disp.authorization.setLogin(new_login);
+        new_disp.authorization.setPassword(new_password);
+        new_disp.authorization.setRole(new_role);
+        new_disp.authorization.setAccess(new_access);
+        new_disp.authorization.setId(new_id);
         cout << "\n\t¬ведите фамилию: ";
         new_surname = inputString();
         cout << "\n\t¬ведите им€: ";
@@ -203,11 +203,11 @@ void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp
         int new_id = (Passenger::number_of_pass+1) * 10;
         string new_name, new_surname, new_patronimic, new_mail, new_phone, new_passport;
         Passenger new_pass;
-        new_pass.authorization->setLogin(new_login);
-        new_pass.authorization->setPassword(new_password);
-        new_pass.authorization->setRole(new_role);
-        new_pass.authorization->setAccess(new_access);
-        new_pass.authorization->setId(new_id);
+        new_pass.authorization.setLogin(new_login);
+        new_pass.authorization.setPassword(new_password);
+        new_pass.authorization.setRole(new_role);
+        new_pass.authorization.setAccess(new_access);
+        new_pass.authorization.setId(new_id);
         
         cout << "\n\t¬ведите фамилию: ";
         new_surname = inputString();
