@@ -38,8 +38,67 @@ static const string encryption_key = "МирТанков";
 
 namespace Yan
 {
+	string getCurrentTime()
+	{
+		time_t now = time(0);
+		tm ltm;
+		localtime_s(&ltm, &now);
+		string time = /*to_string(ltm.tm_year + 1900) + '-' + to_string(ltm.tm_mon + 1) + '-' + to_string(ltm.tm_mday) + ' '
+			+*/ to_string(ltm.tm_hour) + ':' + to_string(ltm.tm_min) + ':' + to_string(ltm.tm_sec);
+		return time;
+	}
+
+	string getCurrentDate()
+	{
+		time_t now = time(0);
+		tm ltm;
+		localtime_s(&ltm, &now);
+		string time = to_string(ltm.tm_year + 1900) + '-' + to_string(ltm.tm_mon + 1) + '-' + to_string(ltm.tm_mday)/* + ' '
+			+ to_string(ltm.tm_hour) + ':' + to_string(ltm.tm_min) + ':' + to_string(ltm.tm_sec)*/;
+		return time;
+	}
+
+	string getCurrentDateTime()
+	{
+		time_t now = time(0);
+		tm ltm;
+		localtime_s(&ltm, &now);
+		string time = to_string(ltm.tm_year + 1900) + '-' + to_string(ltm.tm_mon + 1) + '-' + to_string(ltm.tm_mday) + ' '
+			+ to_string(ltm.tm_hour) + ':' + to_string(ltm.tm_min) + ':' + to_string(ltm.tm_sec);
+		return time;
+	}
+
+	void printConsoleCentered(const string& text, int width)
+	{
+		int padding = (width - text.length()) / 2;
+		cout << setw(padding + text.length()) << text << endl;
+	}
+
+	void consoleWidthHeight()
+	{
+		CONSOLE_SCREEN_BUFFER_INFO csbi;
+		GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+
+		int consoleWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+		int consoleHeight = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
+		cout << "Console Width: " << consoleWidth << endl;
+		cout << "Console Height: " << consoleHeight << endl;
+	}
+
+	void getCurrentTimeGPT()
+	{
+		// Получение текущего времени
+		auto now = chrono::system_clock::now();
+		// Преобразование в формат времени ctime
+		time_t currentTime = chrono::system_clock::to_time_t(now);
+		// Вывод текущего времени в формате ctime
+		cout << "Current time: " << ctime(&currentTime);
+	}
+
 
 }
+
 extern void main_menu();
 extern void title(const string text_zagolovok);
 
@@ -63,15 +122,10 @@ extern string inputString();
 extern string inputStringMail();
 extern string passwordEncryption();
 
-extern string getCurrentDate();
-extern string getCurrentTime();
 extern string getDate(int day, int month, int year);
 extern string getTime(int sec, int min, int hour);
 
 extern void intro();
-extern void printConsoleCentered(const string& text, int width);
-extern void consoleWidthHeight();
-extern void getCurrentTimeGPT();
 
 
 
@@ -876,7 +930,7 @@ public:
 		string number = to_string(this->number);
 		title("Информация о поезде №" + number);
 		cout << "  " << setw(126) << "" << endl; cout.fill(' ');
-		cout << "  $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $"
+		cout << "  $" <<setw(8)<<"Номер"<<" $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $"
 			<< setw(15) << "Кол-во вагонов" << " $"
 			<< setw(15) << "Свободных мест" << " $" << endl;
 
@@ -884,12 +938,12 @@ public:
 		cout << "  " << setw(126) << "" << endl;
 		cout.fill(' ');
 
-		cout << "  $" << setw(18) << this->route[0].getName() << " - " << setw(18) << this->route[route.size()-1].getName()
+		cout << "  $" << setw(8) << this->number << " $" << setw(18) << this->route[0].getName() << " - " << setw(18) << this->route[route.size() - 1].getName()
 			<< " $" << setw(20) << this->getArrDate() << " - " << setw(20) << this->getDepDate() << "   " 
 			<< setw(20) << this->getArrTime() << " - " << setw(20) << this->getDepTime() << " $"
 			<< setw(15) << this->number_of_vans << " $" << setw(15) << this->tickets.size() << " $" << endl;
 		cout.fill('~');
-		cout << "  " << setw(67) << "" << endl;
+		cout << "  " << setw(126) << "" << endl;
 	}
 
 	void showTrainsInfo(vector<Train> arr_of_train)
@@ -897,7 +951,7 @@ public:
 		int i = 0;
 		title("Информация о поездах");
 		cout << "  " << setw(126) << "" << endl; cout.fill(' ');
-		cout << "  $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $" 
+		cout << "  $" << setw(8) << "Номер" << " $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $"
 			<< setw(15) << "Кол-во вагонов" << " $"
 			<< setw(15) << "Свободных мест" << " $" << endl;
 
@@ -906,7 +960,7 @@ public:
 		cout.fill(' ');
 		while (i < arr_of_train.size())
 		{
-			cout << "  $" << setw(18) << arr_of_train[i].route[0].getName() << " - " << setw(17) << arr_of_train[i].route[route.size() - 1].getName()
+			cout << "  $" << setw(8) << arr_of_train[i].getNumber() << " $" << setw(18) << arr_of_train[i].route[0].getName() << " - " << setw(17) << arr_of_train[i].route[route.size() - 1].getName()
 				<< " $" << setw(19) << arr_of_train[i].date[0] << " - " << setw(19) << arr_of_train[i].date[1] << " $"
 				<< setw(15) << arr_of_train[i].number_of_vans << " $" << setw(15) << arr_of_train[i].tickets.size() << " $" << endl;
 			cout.fill('~');
@@ -931,7 +985,7 @@ public:
 		{
 			title("Информация о поездах");
 			cout << "  " << setw(126) << "" << endl; cout.fill(' ');
-			cout << "  $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $"
+			cout << "  $" << setw(8) << "Номер" << " $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $"
 				<< setw(15) << "Кол-во вагонов" << " $"
 				<< setw(15) << "Свободных мест" << " $" << endl;
 
@@ -942,7 +996,7 @@ public:
 			{
 				if (arr_of_train[i].getArrStop() == arrival && arr_of_train[i].getDepStop() == depart)
 				{
-					cout << "  $" << setw(18) << arr_of_train[i].route[0].getName() << " - " << setw(18) << arr_of_train[i].route[route.size() - 1].getName()
+					cout << "  $" << setw(8) << arr_of_train[i].getNumber() << " $" << setw(18) << arr_of_train[i].route[0].getName() << " - " << setw(18) << arr_of_train[i].route[route.size() - 1].getName()
 						<< " $" << setw(19) << arr_of_train[i].date[0] << " - " << setw(19) << arr_of_train[i].date[1] << " $"
 						<< setw(15) << arr_of_train[i].number_of_vans << " $" << setw(15) << arr_of_train[i].tickets.size() << " $" << endl;
 					cout.fill('~');
@@ -2291,71 +2345,3 @@ extern void authorization(vector<Passenger>& arr_of_pass, vector<Dispatcher>& ar
 extern void menuPassenger(vector<Passenger>& arr_of_pass);
 extern void menuDispatcher(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp);
 
-
-
-
-
-
-
-//extern string encryptPassword(const string& password, const string& key);
-//extern string decryptPassword(const string& encryptedPassword, const string& key);
-
-
-
-//extern void menuAccount(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp);
-//extern void writeFIOToFile(const string& filename, const string& firstName, const string& lastName, const string& middleName);
-//extern void writeEncryptedPasswordToFile(const string& filename, const int& id, const string& encryptedPassword);
-
-//class Date
-//{
-//	int day;
-//	int month;
-//	int year;
-//public:
-//	Date() : day(0), month(0), year(0) {}
-//	Date(int year, int month, int day) : day(day), month(month), year(year) {}
-//	Date(const Date& other)
-//	{
-//		this->day = other.day;
-//		this->month = other.month;
-//		this->year = other.year;
-//	}
-//
-//	void setDay(int day) { this->day = day; }
-//	int getDay() { return this->day; }
-//
-//	void setMonth(int month) { this->month = month; }
-//	int getMonth() { return this->month; }
-//
-//	void setYear(int year) { this->year = year; }
-//	int getYear() { return this->year; }
-//
-//
-//};
-//
-//class Time
-//{
-//	int seconds;
-//	int minutes;
-//	int hours;
-//public:
-//	Time() : seconds(0), minutes(0), hours(0) {}
-//	Time(int hours, int minutes, int seconds) : hours(hours), minutes(minutes), seconds(seconds) {}
-//	Time(const Time& other)
-//	{
-//		this->hours = other.hours;
-//		this->minutes = other.minutes;
-//		this->seconds = other.seconds;
-//	}
-//
-//	void setHours(int hours) { this->hours = hours; }
-//	int getHours() { return this->hours; }
-//
-//	void setMinutes(int minutes) { this->minutes = minutes; }
-//	int getMinutes() { return this->minutes; }
-//
-//	void setSeconds(int seconds) { this->minutes; }
-//	int getSeconds() { return this->seconds; }
-//
-//
-//};

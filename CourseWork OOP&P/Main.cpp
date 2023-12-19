@@ -19,14 +19,12 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	system("chcp 1251");
-	//system("cls");
 	system("color F5");
 	current_login[0] = '\0';
 	current_role = -1;
 	current_i = 0;
 	current_attempt = 0;
 	cout.fill('~');
-
 	intro();
 	main_menu();
 	
