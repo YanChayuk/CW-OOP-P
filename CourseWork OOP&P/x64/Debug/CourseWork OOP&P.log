@@ -1,21 +1,18 @@
 ﻿  Checks.cpp
 C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(610,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(995,24): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1000,27): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1554,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(870,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1577,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Main.cpp
 C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(610,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(995,24): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1000,27): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1554,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(870,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1577,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Main.cpp(143,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   Source.cpp
 C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(610,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(995,24): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1000,27): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1554,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(870,40): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Header.h(1577,23): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Source.cpp(82,65): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Source.cpp(585,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Source.cpp(584,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Generating Code...
 C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Checks.cpp(56): warning C4715: 'inputNumber': not all control paths return a value
 C:\Папка Яна Сергеевича\БГУИР\2 курс\курсач ООПиП\CourseWork OOP&P\CourseWork OOP&P\Checks.cpp(111): warning C4715: 'inputNumberFloat': not all control paths return a value

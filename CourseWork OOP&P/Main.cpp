@@ -74,7 +74,7 @@ void main_menu()
 
 void menuPassenger(vector<Passenger>& arr_of_pass)
 {
-	vector<Ticket> order;
+	vector<Ticket> order; Ticket tick;
 	order.reserve(10);
 	Train train; vector<Train> arr_of_train; train.fillTrains(arr_of_train);
 	int choice = 0, cur_i = 0, i_van = 0;;
@@ -95,7 +95,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 		choice = inputNumber(0, 3);
 		switch (choice)
 		{
-		case 0: {current_role = -1; current_login = " "; flag_exit = false; } break;
+		case 0: {current_role = -1; current_login = ""; flag_exit = false; } break;
 		case 1:
 		{
 			arr_of_pass[current_i].menuAccount(arr_of_pass);
@@ -140,7 +140,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 					cout << "\n\tВвыберите место: ";
 					ticket.setPlace(inputNumber(1, arr_of_train[cur_i].getNumberSeats(cur_i)));
 					ticket.enterRoute();
-					ticket.setPrice(18.32 + cur_i*10);
+					ticket.setPrice(18.32 + cur_i * 10);
 					ticket.setNumber(100 * cur_i);
 					ticket.setTariff("Полный");
 					ticket.setArrDate(arr_of_train[cur_i].getArrDate());
@@ -155,6 +155,8 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 				}
 				else cout << "\n\tТакого поезда нет!" << endl;
 			}
+			else cout << "\n\tПоездов по такому маршруту нет!" << endl;
+			system("pause");
 		}
 		break;
 		case 3:
@@ -166,7 +168,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 			}
 			else
 			{
-				order[0].showTicketsInfo(order);
+				tick.showTicketsInfo(order);
 				cout << "\n\tОплатить заказ?(Да/Нет)" << endl << "\t";
 				chose = inputString();
 				if (chose == "Да")
@@ -181,7 +183,7 @@ void menuPassenger(vector<Passenger>& arr_of_pass)
 						arr_of_train[cur_i].deleteSeat(order[i].getPlace(), i_van);
 						i++;
 					}
-					order[0].writeTickets(order);
+					tick.writeTickets(order);
 					arr_of_pass[current_i].pay(price);
 
 					arr_of_train[cur_i].writeSeats();

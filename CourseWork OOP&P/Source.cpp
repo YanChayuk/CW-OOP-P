@@ -143,7 +143,6 @@ void regisration(vector<Passenger>& arr_of_pass, vector<Dispatcher>& arr_of_disp
     cout << "\n\t¬ведите новый пароль - ";
     new_password = inputStringPassword();
     i = 0; j = 0;
-    current_role = 0;
     while (i < arr_of_pass.size() || j < arr_of_disp.size())
     {
         if (i < arr_of_pass.size() && arr_of_pass[i].authorization.getLogin() == new_login )

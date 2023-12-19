@@ -412,10 +412,10 @@ public:
 		file.close();
 	}
 
-	void addStopover()
+	void addRoute()
 	{
 		ofstream file;
-		file.open(PATH_FILE_OF_STOPOVERS, ios::app);
+		file.open(PATH_FILE_OF_ROUTES, ios::app);
 		if (!file.is_open())
 		{
 			cout << "Не удалось открыть файл" << endl;
@@ -425,7 +425,6 @@ public:
 		file.seekp(0, ios::end);
 		if (file.tellp() == 0)
 		{
-
 			file << *this;
 		}
 		else
@@ -434,9 +433,7 @@ public:
 		}
 		file.close();
 	}
-
-
-
+	
 };
 
 class Ticket
@@ -451,7 +448,10 @@ class Ticket
 public:
 	static int number_of_tickets;
 
-	Ticket() : number(0), place(0), price(0), tariff("") { route.reserve(10); date.push_back(""); date.push_back(""); time.push_back(""); time.push_back(""); }
+	Ticket() : number(0), place(0), price(0), tariff("") 
+	{ 
+		Stopover stop;
+		route.push_back(stop); route.push_back(stop); date.push_back(""); date.push_back(""); time.push_back(""); time.push_back(""); }
 	Ticket(int number, int place, float price, string tariff, vector<Stopover> route, vector<string> date, vector<string> time)
 	{
 		this->number = number; this->place = place; this->price = price;
@@ -702,7 +702,12 @@ class Train
 public:
 	static int number_of_trains;
 
-	Train() : number(0) { route.reserve(10); vans.reserve(10); tickets.reserve(10); date.push_back(""); date.push_back(""); time.push_back(""); time.push_back(""); }
+	Train() : number(0) 
+	{
+		Ticket ticket; Stopover stop; Van van;
+		route.push_back(stop); route.push_back(stop); vans.push_back(van); tickets.push_back(ticket);
+		date.push_back(""); date.push_back(""); time.push_back(""); time.push_back(""); 
+	}
 	Train(int number, vector<Ticket> tickets, vector<Stopover> route, vector<Van> vans, vector<string> date)
 	{
 		this->number = number;
@@ -732,7 +737,7 @@ public:
 	string getRoute() { return route[route.size()-1].getName(); }
 
 	string getArrStop() { return route[0].getName(); }
-	string getDepStop() { return route[number_of_stopover-1].getName(); }
+	string getDepStop() { return route[route.size()-1].getName(); }
  
 	int getNumberSeats(int seat) { return this->vans[seat].getSeatsNumber(); }
 	int getNumberVans() { return this->number_of_vans; }
@@ -794,10 +799,13 @@ public:
 		{
 			cout << "\n\tВведите название станции маршрута: ";
 			stop.setName(inputString());
-			route.push_back(stop);
+			if (i < 2) route[i] = stop;
+			else route.push_back(stop);
+			stop.addRoute();
 			cout << endl;
 			i++;
 		}
+
 	}
 
 	string getRouteName(int i)
@@ -859,6 +867,7 @@ public:
 				}
 			}
 		}
+		train.number_of_stopover = route.size();
 		file.close();
 	}
 
@@ -866,12 +875,13 @@ public:
 	{
 		string number = to_string(this->number);
 		title("Информация о поезде №" + number);
-		cout << "  " << setw(67) << "" << endl; cout.fill(' ');
-		cout << "  $" << setw(36) << "Маршрут" << " $" << setw(41) << "Дата и время" << " $" << setw(15) << "Кол-во вагонов" << " $"
+		cout << "  " << setw(126) << "" << endl; cout.fill(' ');
+		cout << "  $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $"
+			<< setw(15) << "Кол-во вагонов" << " $"
 			<< setw(15) << "Свободных мест" << " $" << endl;
 
 		cout.fill('~');
-		cout << "  " << setw(67) << "" << endl;
+		cout << "  " << setw(126) << "" << endl;
 		cout.fill(' ');
 
 		cout << "  $" << setw(18) << this->route[0].getName() << " - " << setw(18) << this->route[route.size()-1].getName()
@@ -886,20 +896,22 @@ public:
 	{
 		int i = 0;
 		title("Информация о поездах");
-		cout << "  " << setw(67) << "" << endl; cout.fill(' ');
-		cout << "  $" << setw(36) << "Маршрут" << " $" << setw(41) << "Дата и время" << " $" << setw(15) << "Кол-во вагонов" << " $"
+		cout << "  " << setw(126) << "" << endl; cout.fill(' ');
+		cout << "  $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $" 
+			<< setw(15) << "Кол-во вагонов" << " $"
 			<< setw(15) << "Свободных мест" << " $" << endl;
 
 		cout.fill('~');
-		cout << "  " << setw(67) << "" << endl;
+		cout << "  " << setw(126) << "" << endl;
 		cout.fill(' ');
 		while (i < arr_of_train.size())
 		{
-			cout << "  $" << setw(18) << arr_of_train[i].route[0].getName() << " - " << setw(18) << arr_of_train[i].route[route.size() - 1].getName()
-				<< " $" << setw(20) << arr_of_train[i].date[0] << " - " << setw(20) << arr_of_train[i].date[1] << " $"
+			cout << "  $" << setw(18) << arr_of_train[i].route[0].getName() << " - " << setw(17) << arr_of_train[i].route[route.size() - 1].getName()
+				<< " $" << setw(19) << arr_of_train[i].date[0] << " - " << setw(19) << arr_of_train[i].date[1] << " $"
 				<< setw(15) << arr_of_train[i].number_of_vans << " $" << setw(15) << arr_of_train[i].tickets.size() << " $" << endl;
 			cout.fill('~');
-			cout << "  " << setw(67) << "" << endl;
+			cout << "  " << setw(126) << "" << endl;
+			cout.fill(' ');
 			i++;
 		}
 	}
@@ -917,23 +929,24 @@ public:
 		}
 		if (k == 1)
 		{
-			("Информация о поездах");
-			cout << "  " << setw(67) << "" << endl; cout.fill(' ');
-			cout << "  $" << setw(36) << "Маршрут" << " $" << setw(41) << "Дата и время" << " $" << setw(15) << "Кол-во вагонов" << " $"
+			title("Информация о поездах");
+			cout << "  " << setw(126) << "" << endl; cout.fill(' ');
+			cout << "  $" << setw(38) << "Маршрут               " << " $" << setw(39) << "Дата и время            " << " $"
+				<< setw(15) << "Кол-во вагонов" << " $"
 				<< setw(15) << "Свободных мест" << " $" << endl;
 
 			cout.fill('~');
-			cout << "  " << setw(67) << "" << endl;
+			cout << "  " << setw(126) << "" << endl;
 			cout.fill(' ');
 			while (i < arr_of_train.size())
 			{
 				if (arr_of_train[i].getArrStop() == arrival && arr_of_train[i].getDepStop() == depart)
 				{
 					cout << "  $" << setw(18) << arr_of_train[i].route[0].getName() << " - " << setw(18) << arr_of_train[i].route[route.size() - 1].getName()
-						<< " $" << setw(20) << arr_of_train[i].date[0] << " - " << setw(20) << arr_of_train[i].date[1] << " $"
+						<< " $" << setw(19) << arr_of_train[i].date[0] << " - " << setw(19) << arr_of_train[i].date[1] << " $"
 						<< setw(15) << arr_of_train[i].number_of_vans << " $" << setw(15) << arr_of_train[i].tickets.size() << " $" << endl;
 					cout.fill('~');
-					cout << "  " << setw(67) << "" << endl;
+					cout << "  " << setw(126) << "" << endl;
 				}
 				i++;
 			}
@@ -945,9 +958,9 @@ public:
 	friend ostream& operator<<(ostream& s, Train& train)
 	{
 		s << " " << train.number << " $ " << train.route[0].getName() << " - " << train.getRoute()
-			<< " $ " << train.date[0] << " - " << train.date[1] << " $ "
-			<< " $ " << train.time[0] << " - " << train.time[1] << " $ "
-			<< train.number_of_vans << " $ " << train.tickets.size() << " $";
+			<< " $ " << train.date[0] << " - " << train.date[1]
+			<< " $ " << train.time[0] << " - " << train.time[1] 
+			<< " $ " << train.number_of_vans << " $ " << train.tickets.size() << " $";
 		return s;
 	}
 
@@ -990,14 +1003,25 @@ public:
 		train.date[1].push_back(stoi(temp));
 
 		s.get();
-		getline(s, temp, '$');
+		getline(s, temp, '-');
 		temp.pop_back();
-		train.vans[stoi(temp)];
+		train.time[0].push_back(stoi(temp));
 
 		s.get();
 		getline(s, temp, '$');
 		temp.pop_back();
-		train.tickets[stoi(temp)];
+		train.time[1].push_back(stoi(temp));
+
+		s.get();
+		getline(s, temp, '$');
+		temp.pop_back();
+		train.vans.resize(stoi(temp));
+		train.number_of_vans = stoi(temp);
+
+		s.get();
+		getline(s, temp, '$');
+		temp.pop_back();
+		train.tickets.resize(stoi(temp));
 
 		return s;
 	}
@@ -1070,7 +1094,6 @@ public:
 		}
 		file.close();
 	}
-
 
 };
 
@@ -1192,17 +1215,17 @@ public:
 	void showAccountInfo() override
 	{
 		title("Информация о пассажире");
-		cout << "  " << setw(129) << "" << endl;
+		cout << "  " << setw(140) << "" << endl;
 		cout.fill(' ');
 		cout << "  $" << setw(20) << "Фамилия" << " $" << setw(10) << "Имя" << " $" << setw(19) << "Отчество" << " $" << setw(9)<< "Баланс"<<" $"<<
 			setw(25) << "Электронная почта    " << " $" << setw(19) << "Номер телефона" << " $" << setw(23) << "Серия и номер паспорта" << " $" << endl;
 		cout.fill('~');
-		cout << "  " << setw(129) << "" << endl;
+		cout << "  " << setw(140) << "" << endl;
 		cout.fill(' ');
 		cout << "  $" << setw(20) << this->getSurname() << " $" << setw(10) << this->getName() << " $" << setw(19) << this->getPatronimic() << " $" << setw(9) << setprecision(2) << this->getBalance()
 			<< " $" << setw(25) << this->mail << " $" << setw(19) << this->phone_number << " $" << setw(23) << this->passport_data << " $" << endl;
 		cout.fill('~');
-		cout << "  " << setw(129) << "" << endl;
+		cout << "  " << setw(140) << "" << endl;
 	}
 
 	void corAccount() override 
@@ -1944,7 +1967,7 @@ public:
 			cout << "  $    0 - Назад                                                          $" << endl;
 			cout << "  $    1 - Добавить поезд                                                 $" << endl;
 			cout << "  $    2 - Просмотреть поезда                                             $" << endl;
-			cout << "  $    3 - Просмотреть станции                                            $" << endl;
+			cout << "  $    3 - Просмотреть маршруты                                           $" << endl;
 			cout << "  $                                                                       $" << endl;
 			cout.fill('~');
 			cout << "  " << setw(73) << "" << endl;
@@ -1979,25 +2002,6 @@ public:
 					cout << "\n\tВведите количество станций маршрута(до 30): ";
 					train.setStopoverNumber(inputNumber(1, 30));
 					train.setRoute();
-
-					ofstream file;
-					file.open(PATH_FILE_OF_ROUTES);
-					if (!file.is_open())
-					{
-						cout << "Не удалось открыть файл" << endl;
-						exit(0);
-					}
-					train.setStopoverNumber(train.getStopoverNumber()+1);
-					file << " " << train.getNumber() << " $ ";
-					for (int i = 0; i < train.getStopoverNumber(); i++)
-					{
-						file << train.getRouteName(i) << " $ ";
-						if (i != train.getStopoverNumber() - 1)
-						{
-							file << endl;
-						}
-					}
-					file.close();
 					
 					int day1, month1, year1, sec1, min1, hour1,q=0, day2, month2, year2, sec2, min2, hour2;
 					cout << "\n\tВведите дату отправления(день,месяц,год): ";
@@ -2077,13 +2081,31 @@ public:
 			break;
 			case 3:
 			{
-				Stopover stop; vector<Stopover> arr_of_stop;
+				vector<Train> train; Train tr; int i = 0, j = 0;
+				tr.fillTrains(train);
+				if (train.size() > 0)
+				{
+					while (i < train.size())
+					{
+						train[i].readRoute();
+						while (j < train[i].getStopoverNumber())
+						{
+							if (j < train[i].getStopoverNumber() - 1) cout << endl << train[i].getRouteName(j) << " -> ";
+							else cout << endl << train[i].getRouteName(j) << endl;
+							j++;
+						}
+						i++;
+					}
+				}
+				else cout << "\n\tМаршрутов нет!" << endl;
+
+				/*Stopover stop; vector<Stopover> arr_of_stop;
 				stop.fillStopovers(arr_of_stop);
 				if (arr_of_stop.size() > 0)
 				{
 					stop.showStopoversInfo(arr_of_stop);
 				}
-				else cout << "\n\tСтанции отсутсвуют!" << endl;
+				else cout << "\n\tСтанции отсутсвуют!" << endl;*/
 				cout << endl; system("pause");
 			}
 			break;
